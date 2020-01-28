@@ -64,6 +64,7 @@ public class Rectangle {
         return color;
     }
 
+
     //is this square visible
     public boolean isVisible() {
         return isVisible;
@@ -73,6 +74,10 @@ public class Rectangle {
     public boolean isSelected() {
         return isSelected;
     }
+
+    public void setSelected(boolean selected){this.isSelected = selected;}
+
+    public void setVisible(boolean visible){this.isVisible = visible;}
 
     //set the amount of this square touching the edge of game board
     public void setBorderSize(int border) {
