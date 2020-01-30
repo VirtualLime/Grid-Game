@@ -10,6 +10,9 @@ import java.util.Arrays;
  **/
 public class NestedGrid {
 
+    int counter = 0;
+
+    private boolean found = false;
 
     //Comes with a static array of colors
     private Color[] palette;
@@ -151,20 +154,30 @@ public class NestedGrid {
     //Moving up the tree, there is a problem where if you move up too many times at the start you keep inflating the level
     //so probably have to set a condition where you decrease the level only at a specific time, or use something else
     public void moveUp() {
-        this.level = level - 1;
+        System.out.println(parent.rectangle.getSize());
+        if(level != 1) {
+            this.level = level - 1;
+        }
         //Finds the parent and selects it
         findParent(root, level);
+        counter = 0;
         System.out.println("Level " + level);
+        System.out.println("Parent level " + parent.level);
         setRectangles(true, false, false, false, false);
+        System.out.println(parent.rectangle.getSize());
     }
 
     public void findParent(Node node, int level){
         if(node == null){
             return;
         }
-
-        if(node.level == level && node.upperRight != null && node.upperLeft != null && node.lowerLeft != null && node.lowerRight != null){
+        if(node.level == level && node.upperRight != null && node.upperLeft != null && node.lowerLeft != null && node.lowerRight != null &&
+                (node.upperRight.rectangle.isSelected() || node.upperLeft.rectangle.isSelected() || node.lowerLeft.rectangle.isSelected() || node.lowerRight.rectangle.isSelected())){
             System.out.println("I was hit");
+            counter++;
+            if(counter >= 2){
+                debugCondition();
+            }
             this.parent = node;
         }
 
@@ -176,16 +189,24 @@ public class NestedGrid {
         }
     }
 
+    public void debugCondition(){
+
+    }
+
     /**
      * the selected square moves into the upper right child (if possible)
      * of the currently selected square
      */
     //Sometimes this doesn't work for some squares and you have to split it to move into it, since the parent is not set here
     public void moveDown() {
-        level = level + 1;
-        System.out.println("Level " + level);
-        System.out.println(this.parent.rectangle.getSize());
-        setRectangles(false, false, false, true, false);
+        if(parent.upperRight != null) {
+            level = level + 1;
+            System.out.println("Level " + level);
+            setRectangles(false, false, false, true, false);
+            parent = parent.upperRight;
+            System.out.println("Parent level " + parent.level);
+            System.out.println(parent.rectangle.getSize());
+        }
     }
 
 
@@ -196,17 +217,32 @@ public class NestedGrid {
      * the selected square moves counter clockwise to a sibling
      */
     public void moveLeft() {
+        Node temp = parent;
+        findParent(root, temp.level - 1);
+        counter = 0;
         if(parent.upperRight.rectangle.isSelected()){
             setRectangles(false, false, false, false, true);
+            parent = parent.upperLeft;
+            System.out.println("Parent level " + parent.level);
+            System.out.println(parent.rectangle.getSize());
         }
         else if(parent.upperLeft.rectangle.isSelected()){
             setRectangles(false, true, false, false, false);
+            parent = parent.lowerLeft;
+            System.out.println("Parent level " + parent.level);
+            System.out.println(parent.rectangle.getSize());
         }
         else if(parent.lowerLeft.rectangle.isSelected()){
             setRectangles(false, false, true, false, false);
+            parent = parent.lowerRight;
+            System.out.println("Parent level " + parent.level);
+            System.out.println(parent.rectangle.getSize());
         }
         else if(parent.lowerRight.rectangle.isSelected()){
             setRectangles(false, false, false, true, false);
+            parent = parent.upperRight;
+            System.out.println("Parent level " + parent.level);
+            System.out.println(parent.rectangle.getSize());
         }
     }
 
@@ -215,17 +251,32 @@ public class NestedGrid {
      * Move the selected square to the next sibling clockwise
      */
     public void moveRight() {
+        Node temp = parent;
+        findParent(root, temp.level -1);
+        counter = 0;
         if(parent.upperRight.rectangle.isSelected()){
             setRectangles(false, false, true, false, false);
+            parent = parent.lowerRight;
+            System.out.println("Parent level " + parent.level);
+            System.out.println(parent.rectangle.getSize());
         }
         else if(parent.upperLeft.rectangle.isSelected()){
             setRectangles(false, false, false, true, false);
+            parent = parent.upperRight;
+            System.out.println("Parent level " + parent.level);
+            System.out.println(parent.rectangle.getSize());
         }
         else if(parent.lowerLeft.rectangle.isSelected()){
             setRectangles(false, false, false, false, true);
+            parent = parent.upperLeft;
+            System.out.println("Parent level " + parent.level);
+            System.out.println(parent.rectangle.getSize());
         }
         else if(parent.lowerRight.rectangle.isSelected()){
             setRectangles(false, true, false, false, false);
+            parent = parent.lowerLeft;
+            System.out.println("Parent level " + parent.level);
+            System.out.println(parent.rectangle.getSize());
         }
     }
 
@@ -275,45 +326,51 @@ public class NestedGrid {
      * smashed (it's just not visible anymore)
      */
     public void smash() {
-        setNewRandomNumber();
-        if(parent.upperRight.rectangle.isSelected()){
-            parent.upperRight.rectangle.setVisible(false);
-            Rectangle[] rectangles = make4Rectangle(parent.upperRight.rectangle.getSize(), this.randomNumber, this.palette, parent.upperRight.rectangle.getX(),
-                    parent.upperRight.rectangle.getY());
+        if(parent.upperRight == null) {
+            setNewRandomNumber();
+            parent.rectangle.setVisible(false);
+            Rectangle[] rectangles = make4Rectangle(parent.rectangle.getSize(), this.randomNumber, this.palette, parent.rectangle.getX(),
+                    parent.rectangle.getY());
             System.out.println(parent.rectangle.getSize());
-            parent = parent.upperRight;
             //this.level = parent.level;
             //level++;
             setParentNodes(rectangles, level + 1);
         }
-        else if(parent.upperLeft.rectangle.isSelected()){
-            parent.upperLeft.rectangle.setVisible(false);
-            Rectangle[] rectangles = make4Rectangle(parent.upperLeft.rectangle.getSize(), this.randomNumber, this.palette, parent.upperLeft.rectangle.getX(),
-                    parent.upperLeft.rectangle.getY());
-            parent = parent.upperLeft;
-            //this.level = parent.level;
-            //level++;
-            setParentNodes(rectangles, level + 1);
+       /* if(parent.upperRight == null) {
+            if (parent.upperRight.rectangle.isSelected()) {
+                parent.upperRight.rectangle.setVisible(false);
+                Rectangle[] rectangles = make4Rectangle(parent.upperRight.rectangle.getSize(), this.randomNumber, this.palette, parent.upperRight.rectangle.getX(),
+                        parent.upperRight.rectangle.getY());
+                System.out.println(parent.rectangle.getSize());
+                //this.level = parent.level;
+                //level++;
+                setParentNodes(rectangles, level + 1);
+            } else if (parent.upperLeft.rectangle.isSelected()) {
+                parent.upperLeft.rectangle.setVisible(false);
+                Rectangle[] rectangles = make4Rectangle(parent.upperLeft.rectangle.getSize(), this.randomNumber, this.palette, parent.upperLeft.rectangle.getX(),
+                        parent.upperLeft.rectangle.getY());
+                //this.level = parent.level;
+                //level++;
+                setParentNodes(rectangles, level + 1);
+            } else if (parent.lowerLeft.rectangle.isSelected()) {
+                parent.lowerLeft.rectangle.setVisible(false);
+                Rectangle[] rectangles = make4Rectangle(parent.lowerLeft.rectangle.getSize(), this.randomNumber, this.palette, parent.lowerLeft.rectangle.getX(),
+                        parent.lowerLeft.rectangle.getY());
+                //this.level = parent.level;
+                //level++;
+                setParentNodes(rectangles, level + 1);
+            } else if (parent.lowerRight.rectangle.isSelected()) {
+                parent.lowerRight.rectangle.setVisible(false);
+                Rectangle[] rectangles = make4Rectangle(parent.lowerRight.rectangle.getSize(), this.randomNumber, this.palette, parent.lowerRight.rectangle.getX(),
+                        parent.lowerRight.rectangle.getY());
+                //this.level = parent.level;
+                //level++;
+                setParentNodes(rectangles, level + 1);
+            }
         }
-        else if(parent.lowerLeft.rectangle.isSelected()){
-            parent.lowerLeft.rectangle.setVisible(false);
-            Rectangle[] rectangles = make4Rectangle(parent.lowerLeft.rectangle.getSize(), this.randomNumber, this.palette, parent.lowerLeft.rectangle.getX(),
-                    parent.lowerLeft.rectangle.getY());
-            parent = parent.lowerLeft;
-            //this.level = parent.level;
-            //level++;
-            setParentNodes(rectangles, level + 1);
-        }
-        else if(parent.lowerRight.rectangle.isSelected()){
-            parent.lowerRight.rectangle.setVisible(false);
-            Rectangle[] rectangles = make4Rectangle(parent.lowerRight.rectangle.getSize(), this.randomNumber, this.palette, parent.lowerRight.rectangle.getX(),
-                    parent.lowerRight.rectangle.getY());
-            parent = parent.lowerRight;
-            //this.level = parent.level;
-            //level++;
-            setParentNodes(rectangles, level + 1);
-        }
-
+        else{
+            return;
+        }*/
     }
 
     /**
