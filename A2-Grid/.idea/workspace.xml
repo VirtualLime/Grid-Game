@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ad470a32-ca52-4f9a-a4c5-f7055cd196c9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GridController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GridController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NestedGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NestedGrid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Rectangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Rectangle.java" afterDir="false" />
-    </list>
+    <list default="true" id="ad470a32-ca52-4f9a-a4c5-f7055cd196c9" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +64,14 @@
       <option name="presentableId" value="Default" />
       <updated>1580066269121</updated>
     </task>
+    <task id="LOCAL-00001" summary="A different version. All methods appear to work. Code still needs to be cleaned and comments need to be added.">
+      <created>1580756191294</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1580756191294</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -83,5 +86,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="A different version. All methods appear to work. Code still needs to be cleaned and comments need to be added." />
+    <option name="LAST_COMMIT_MESSAGE" value="A different version. All methods appear to work. Code still needs to be cleaned and comments need to be added." />
   </component>
 </project>
