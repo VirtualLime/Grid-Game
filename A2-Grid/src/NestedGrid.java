@@ -48,7 +48,7 @@ public class NestedGrid {
     private Node currentNode;
 
     /**
-     *
+     * An internal Node Class.
      */
     private class Node{
         private Rectangle rectangle;
