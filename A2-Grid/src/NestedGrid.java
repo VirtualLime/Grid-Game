@@ -47,6 +47,9 @@ public class NestedGrid {
     private Node root;
     private Node currentNode;
 
+    /**
+     *
+     */
     private class Node{
         private Rectangle rectangle;
         private boolean children, selected, visible;
