@@ -24,6 +24,9 @@ public class Rectangle {
     //the amount of this square is touching the edge of the game board
     private int borderSize;
 
+    private int maxsize;
+
+
     /**
      * Contructor
      * @param x1 x coord
@@ -42,6 +45,7 @@ public class Rectangle {
         isVisible = visible;
         isSelected = selected;
         borderSize = 0;
+        maxsize = 0;
     }
 
     //return the x coord
@@ -49,10 +53,16 @@ public class Rectangle {
         return x;
     }
 
+    public void setX(int x1){x = x1;}
+
+    public void setMAx(int max){maxsize = max;}
+
     //return the y coord
     public int getY() {
         return y;
     }
+
+    public void setY(int y1){y = y1;}
 
     //return the length of one side
     public int getSize() {
@@ -81,8 +91,21 @@ public class Rectangle {
 
     //get the amount touching the edge of the game board
     public int getBorderSize() {
+        borderSize = 0;
+        if(!isVisible){return borderSize;}
+        if (x==0 && y == 0){borderSize = 2*size;}
+        else if(x == 0 && y == maxsize - size){borderSize = 2*size;}
+        else if(x == maxsize-size && y == maxsize - size){borderSize = 2*size;}
+        else if(x == maxsize - size && y != maxsize - size && y != 0){borderSize = size;}
+        else if(x == 0 && y != maxsize - size && y != 0){borderSize = size;}
+        else if(y == 0 && x == maxsize - size){borderSize = 2*size;}
+        else if(y == maxsize - size && x != maxsize - size && x != 0){borderSize = size;}
+        else if(y == 0 && x != maxsize - size && x != 0){borderSize = size;}
+        else{borderSize = 0;}
         return borderSize;
     }
+
+    public void selected(boolean s){isSelected = s;}//
 
 
 }

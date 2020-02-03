@@ -79,11 +79,11 @@ public class GridController implements KeyListener {
                         break;
 
             case LEFT:  grid.moveLeft();
-                        System.out.println("cw");
+                        System.out.println("ccw");//switched CCW and CW to show true rotation
                         break;
 
             case RIGHT: grid.moveRight();
-                        System.out.println("ccw");
+                        System.out.println("cw");
                         break;
 
             case SMASH: grid.smash();
