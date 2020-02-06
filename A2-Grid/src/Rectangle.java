@@ -73,6 +73,7 @@ public class Rectangle {
     public Color getColor() {
         return color;
     }
+    public void setColor(Color c){this.color = c;}
 
 
     //is this square visible

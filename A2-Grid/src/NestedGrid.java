@@ -21,6 +21,7 @@ public class NestedGrid {
     private int levels, level, cWCount;
     private Node root;
     private Node currentNode;
+    private int numRotations = 0;
 
     /**
      * Create a NestedGrid w/ 5 random colored squares to start
@@ -34,6 +35,7 @@ public class NestedGrid {
         allBlocks = new ArrayList<Rectangle>();
         levels = mxLevels;
         root = new Node(null, 0, 0, MAX_SIZE, 1);//Create the root Node
+        root.rectangle.setColor(Color.BLACK);
         root.createChildren();//Creates the root Node's children Nodes
         root.select();//Causes the root Node to be selected
         currentNode = root;
@@ -382,30 +384,6 @@ public class NestedGrid {
      * @return
      */
     public Rectangle[] rectanglesToDraw ( ) {
-
-        //placeholder code with hard coded values
-        //just to show something on the screen
-        //delete this code to complete the assignment
-
-        /*ArrayList<Rectangle> allBlocks = new ArrayList<Rectangle>();
-
-        Rectangle r = new Rectangle(0,0, 512, ColorTemplate.SERENITY_NOW[0], false, true);
-        r.setBorderSize(512*4);
-        Rectangle ur = new Rectangle(256,0, 256, ColorTemplate.SERENITY_NOW[1], true, false);
-        ur.setBorderSize(256*2);
-        Rectangle ul = new Rectangle(0,0, 256, ColorTemplate.SERENITY_NOW[2], true, false);
-        ul.setBorderSize(256*2);
-        Rectangle ll = new Rectangle(0,256, 256, ColorTemplate.SERENITY_NOW[3], true, false);
-        ll.setBorderSize(256*2);
-        Rectangle lr = new Rectangle(256,256, 256, ColorTemplate.SERENITY_NOW[4], true, false);
-        lr.setBorderSize(256*2);
-
-        allBlocks.add(r);
-        allBlocks.add(ur);
-        allBlocks.add(ul);
-        allBlocks.add(ll);
-        allBlocks.add(lr);*/
-
         return allBlocks.toArray(new Rectangle[allBlocks.size()]);
     }
 
@@ -420,6 +398,7 @@ public class NestedGrid {
             System.out.println("Smash failed");
             return;
         }
+        currentNode.rectangle.setColor(Color.BLACK);
         currentNode.createChildren();
         System.out.println("Smash succeeded");
         System.out.println("Level: " + level);
@@ -514,40 +493,23 @@ public class NestedGrid {
 
 
         if(clockwise){
-            //currentNode.clockwise();
             cWCount++;
-            /*if(cWCount%4 == 0){
-                moveCW(x2,y2,size,currentNode.ur);
-                moveCW(x3,y3,size,currentNode.lr);
-                moveCW(x4,y4,size,currentNode.ll);
-                moveCW(x1,y1,size,currentNode.ul);
-            }
-            else if (cWCount % 3 == 0) {
-                moveCW(x2,y2,size,currentNode.lr);
-                moveCW(x3,y3,size,currentNode.ll);
-                moveCW(x4,y4,size,currentNode.ul);
-                moveCW(x1,y1,size,currentNode.ur);
-            }
-            else if (cWCount % 2 == 0) {
-                moveCW(x2,y2,size,currentNode.ur);
-                moveCW(x3,y3,size,currentNode.ul);
-                moveCW(x4,y4,size,currentNode.ur);
-                moveCW(x1,y1,size,currentNode.lr);
-            }
-            else{
-                moveCW(x2,y2,size,currentNode.ul);
-                moveCW(x3,y3,size,currentNode.ur);
-                moveCW(x4,y4,size,currentNode.lr);
-                moveCW(x1,y1,size,currentNode.ll);
-            }
-            moveCW(x2,y2,size,currentNode.ul);
-            moveCW(x3,y3,size,currentNode.ur);
-            moveCW(x4,y4,size,currentNode.lr);
-            moveCW(x1,y1,size,currentNode.ll);*/
             moveCW(x1,y1,size,currentNode.ul);
             moveCW(x2,y2,size,currentNode.ll);
             moveCW(x3,y3,size,currentNode.ur);
             moveCW(x4,y4,size,currentNode.lr);
+            Node lowerLeft = currentNode.ll;
+            Node upperLeft = currentNode.ul;
+            Node upperRight = currentNode.ur;
+            Node lowerRight = currentNode.lr;
+            currentNode.ll = lowerRight;
+            currentNode.lr = upperRight;
+            currentNode.ur = upperLeft;
+            currentNode.ul = lowerLeft;
+            currentNode.ll.id = 4;
+            currentNode.ul.id = 1;
+            currentNode.ur.id = 2;
+            currentNode.lr.id = 3;
         }
         else{
 
@@ -624,11 +586,22 @@ public class NestedGrid {
             moveCCW(x3,y3,size,currentNode.ur);
             moveCCW(x4,y4,size,currentNode.lr);
             moveCCW(x1,y1,size,currentNode.ul);
-            /*
-            moveCCW(x2,y2,size,currentNode.lr);
-            moveCCW(x3,y3,size,currentNode.ll);
-            moveCCW(x4,y4,size,currentNode.ul);
-            moveCCW(x1,y1,size,currentNode.ur);*/
+            Node lowerLeft = currentNode.ll;
+            Node upperLeft = currentNode.ul;
+            Node upperRight = currentNode.ur;
+            Node lowerRight = currentNode.lr;
+            currentNode.ll = upperLeft;
+            currentNode.lr = lowerLeft;
+            currentNode.ur = lowerRight;
+            currentNode.ul = upperRight;
+            currentNode.ll.id = 4;
+            currentNode.ul.id = 1;
+            currentNode.ur.id = 2;
+            currentNode.lr.id = 3;
+//            moveCCW(x2,y2,size,currentNode.lr);
+//            moveCCW(x3,y3,size,currentNode.ll);
+//            moveCCW(x4,y4,size,currentNode.ul);
+//            moveCCW(x1,y1,size,currentNode.ur);
         }
         System.out.println("CW count: " + cWCount);
     }
@@ -646,6 +619,7 @@ public class NestedGrid {
                 moveCW(x1 + size / 2, y1 + size / 2, size / 2, n.lr);
                 moveCW(x1, y1 + size / 2, size / 2, n.ll);
                 moveCW(x1, y1, size / 2, n.ul);
+
                 return;
             }
             else if (Math.abs(n.cwRotation) % 4 == 3) {
@@ -653,6 +627,7 @@ public class NestedGrid {
                 moveCW(x1+size/2,y1+size/2,size/2,n.ll);
                 moveCW(x1,y1+size/2,size/2,n.ul);
                 moveCW(x1,y1,size/2,n.ur);
+
                 return;
             }
             else if (Math.abs(n.cwRotation) % 4 == 2) {
@@ -660,6 +635,7 @@ public class NestedGrid {
                 moveCW(x1+size/2,y1+size/2,size/2,n.ul);
                 moveCW(x1,y1+size/2,size/2,n.ur);
                 moveCW(x1,y1,size/2,n.lr);
+
                 return;
             }
             else{
@@ -667,6 +643,7 @@ public class NestedGrid {
                 moveCW(x1+size/2,y1+size/2,size/2,n.ur);
                 moveCW(x1,y1+size/2,size/2,n.lr);
                 moveCW(x1,y1,size/2,n.ll);
+
                 return;
             }
            /* moveCW(x1, y1, size/2, n.ll);//new UL, send
@@ -691,31 +668,18 @@ public class NestedGrid {
                 moveCCW(x1+size/2,y1,size/2,n.ur);
                 moveCCW(x1+size/2,y1+size/2,size/2,n.lr);
                 moveCCW(x1,y1+size/2,size/2,n.ll);
+
                 return;
             }
-            /*
-            if(n.cwRotation%4 == 0) {
-                moveCW(x1 + size / 2, y1, size / 2, n.ur);
-                moveCW(x1 + size / 2, y1 + size / 2, size / 2, n.lr);
-                moveCW(x1, y1 + size / 2, size / 2, n.ll);
-                moveCW(x1, y1, size / 2, n.ul);
-                return;
-            }*/
 
             else if (Math.abs(n.cwRotation) % 4 == 3) {//
                 moveCCW(x1,y1,size/2,n.ur);//ul
                 moveCCW(x1+size/2,y1,size/2,n.lr);//ur
                 moveCCW(x1+size/2,y1+size/2,size/2,n.ll);//lr
                 moveCCW(x1,y1+size/2,size/2,n.ul);//ll
+
                 return;
             }
-            /*else if (n.cwRotation % 4 == 3) {
-                moveCW(x1+size/2,y1,size/2,n.lr);
-                moveCW(x1+size/2,y1+size/2,size/2,n.ll);
-                moveCW(x1,y1+size/2,size/2,n.ul);
-                moveCW(x1,y1,size/2,n.ur);
-                return;
-            }*/
             else if (Math.abs(n.cwRotation % 4) == 2) {
                 moveCCW(x1,y1,size/2,n.lr);//ul
                 moveCCW(x1+size/2,y1,size/2,n.ll);//ur
@@ -723,14 +687,6 @@ public class NestedGrid {
                 moveCCW(x1,y1+size/2,size/2,n.ur);//ll
                 return;
             }
-             /*
-            else if (n.cwRotation % 4 == 2) {
-                moveCW(x1+size/2,y1,size/2,n.ll);
-                moveCW(x1+size/2,y1+size/2,size/2,n.ul);
-                moveCW(x1,y1+size/2,size/2,n.ur);
-                moveCW(x1,y1,size/2,n.lr);
-                return;
-            }*/
 
             else{
                 moveCCW(x1,y1,size/2,n.ll);//ul
@@ -739,22 +695,11 @@ public class NestedGrid {
                 moveCCW(x1,y1+size/2,size/2,n.lr);//ll
                 return;
             }
-            /*
-            else{
-                moveCW(x1+size/2,y1,size/2,n.ul);
-                moveCW(x1+size/2,y1+size/2,size/2,n.ur);
-                moveCW(x1,y1+size/2,size/2,n.lr);
-                moveCW(x1,y1,size/2,n.ll);
-                return;
-            }
-             */
         }
-        //return;
     }
 
     public void swapX(Node n, boolean sameX, boolean sameY){
         Node parent = n.parent;
-
         boolean x1=false;
         boolean x2=false;
         boolean x3=false;
@@ -935,7 +880,19 @@ public class NestedGrid {
             swapY(currentNode.ul,y1,x1);
             swapY(currentNode.ll,y2,x2);
             swapY(currentNode.lr,y3,x3);
-            swapY(currentNode.ur,y4,x4);//then add the Cswaps
+            swapY(currentNode.ur,y4,x4);//then add the Cswap
+            Node lowerLeft = currentNode.ll;
+            Node upperLeft = currentNode.ul;
+            Node upperRight = currentNode.ur;
+            Node lowerRight = currentNode.lr;
+            currentNode.ll = upperLeft;
+            currentNode.lr = upperRight;
+            currentNode.ur = lowerRight;
+            currentNode.ul = lowerLeft;
+            currentNode.ll.id = 4;
+            currentNode.ul.id = 1;
+            currentNode.ur.id = 2;
+            currentNode.lr.id = 3;
            // return;
         }
         else {
@@ -943,6 +900,18 @@ public class NestedGrid {
             swapX(currentNode.ll, x2, y2);
             swapX(currentNode.lr, x3, y3);
             swapX(currentNode.ur, x4, y4);//then add the Cswaps
+            Node lowerLeft = currentNode.ll;
+            Node upperLeft = currentNode.ul;
+            Node upperRight = currentNode.ur;
+            Node lowerRight = currentNode.lr;
+            currentNode.ll = lowerRight;
+            currentNode.lr = lowerLeft;
+            currentNode.ur = upperLeft;
+            currentNode.ul = upperRight;
+            currentNode.ll.id = 4;
+            currentNode.ul.id = 1;
+            currentNode.ur.id = 2;
+            currentNode.lr.id = 3;
         }
 
         if(currentNode.ul.x == currentNode.x){x1 = true;}
@@ -955,63 +924,25 @@ public class NestedGrid {
         if(currentNode.lr.y == currentNode.y){y3 = true;}
         if(currentNode.ur.y == currentNode.y){y4 = true;}
 
-        if(x1 && y1){currentNode.ul.setCWR(0);}
-        else if(x1 && !y1){currentNode.ul.setCWR(3);}
-        else if(!x1 && y1){currentNode.ul.setCWR(1);}
-        else {currentNode.ul.setCWR(2);}
+        if(x1 && y1){currentNode.ul.setCWR(2);}             //0
+        else if(x1 && !y1){currentNode.ul.setCWR(1);}       //3
+        else if(!x1 && y1){currentNode.ul.setCWR(3);}       //1
+        else {currentNode.ul.setCWR(0);}                    //2
 
-        if(x1 && y1){currentNode.ll.setCWR(1);}
-        else if(x1 && !y1){currentNode.ll.setCWR(0);}
-        else if(!x1 && y1){currentNode.ll.setCWR(2);}
-        else {currentNode.ll.setCWR(3);}
+        if(x1 && y1){currentNode.ll.setCWR(3);}             //1
+        else if(x1 && !y1){currentNode.ll.setCWR(2);}       //0
+        else if(!x1 && y1){currentNode.ll.setCWR(0);}       //2
+        else {currentNode.ll.setCWR(1);}                    //3
 
-        if(x1 && y1){currentNode.lr.setCWR(2);}
-        else if(x1 && !y1){currentNode.lr.setCWR(1);}
-        else if(!x1 && y1){currentNode.lr.setCWR(3);}
-        else {currentNode.lr.setCWR(0);}
+        if(x1 && y1){currentNode.lr.setCWR(0);}             //2
+        else if(x1 && !y1){currentNode.lr.setCWR(3);}       //1
+        else if(!x1 && y1){currentNode.lr.setCWR(1);}       //3
+        else {currentNode.lr.setCWR(2);}                    //0
 
-        if(x1 && y1){currentNode.ur.setCWR(3);}
-        else if(x1 && !y1){currentNode.ur.setCWR(2);}
-        else if(!x1 && y1){currentNode.ur.setCWR(0);}
-        else {currentNode.ur.setCWR(1);}
-        //return;
-
-
-        /*
-        if currentNode.ul.x > currentNode.x && currentNode.UL.y > currentNode.y
-            ul.cwrotation = 2
-       if currentNode.ul.x > currentNode.x && currentNode.UL.y !> currentNode.y
-            ul.cwrotation = 1
-       if currentNode.ul.x !> currentNode.x && currentNode.UL.y !> currentNode.y
-            ul.cwrotation = 0
-        if currentNode.ul.x !> currentNode.x && currentNode.UL.y > currentNode.y
-            ul.cwrotation = 3
-        if currentNode.ur.x > currentNode.x && currentNode.Ur.y > currentNode.y
-            ur.cwrotation = 1
-       if currentNode.ul.x > currentNode.x && currentNode.Ur.y !> currentNode.y
-            ur.cwrotation = 0
-       if currentNode.ul.x !> currentNode.x && currentNode.Ur.y !> currentNode.y
-            ur.cwrotation = 3
-        if currentNode.ur.x !> currentNode.x && currentNode.ur.y > currentNode.y
-            ur.cwrotation = 2
-        if currentNode.ll.x > currentNode.x && currentNode.ll.y > currentNode.y
-            ll.cwrotation = 3
-       if currentNode.ul.x > currentNode.x && currentNode.ll.y !> currentNode.y
-            ll.cwrotation = 2
-       if currentNode.ul.x !> currentNode.x && currentNode.ll.y !> currentNode.y
-            ll.cwrotation = 1
-        if currentNode.ll.x !> currentNode.x && currentNode.ll.y > currentNode.y
-            ll.cwrotation = 0
-        if currentNode.lr.x > currentNode.x && currentNode.lr.y > currentNode.y
-            lr.cwrotation = 0
-       if currentNode.lr.x > currentNode.x && currentNode.lr.y !> currentNode.y
-            lr.cwrotation = 3
-       if currentNode.lr.x !> currentNode.x && currentNode.lr.y !> currentNode.y
-            lr.cwrotation = 2
-        if currentNode.lr.x !> currentNode.x && currentNode.lr.y > currentNode.y
-            lr.cwrotation = 1
-
-         */
+        if(x1 && y1){currentNode.ur.setCWR(1);}             //3
+        else if(x1 && !y1){currentNode.ur.setCWR(0);}       //2
+        else if(!x1 && y1){currentNode.ur.setCWR(2);}       //0
+        else {currentNode.ur.setCWR(3);}                    //1
 
     }
 
