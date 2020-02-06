@@ -21,7 +21,7 @@ public class NestedGrid {
     private int levels, level, cWCount;
     private Node root;
     private Node currentNode;
-    private int numRotations = 0;
+   // private int numRotations = 0;
 
     /**
      * Create a NestedGrid w/ 5 random colored squares to start
@@ -493,25 +493,27 @@ public class NestedGrid {
 
 
         if(clockwise){
-            cWCount++;
+            //cWCount++;
+            currentNode.clockwise();//Look here
             moveCW(x1,y1,size,currentNode.ul);
             moveCW(x2,y2,size,currentNode.ll);
             moveCW(x3,y3,size,currentNode.ur);
             moveCW(x4,y4,size,currentNode.lr);
-            Node lowerLeft = currentNode.ll;
+            /*Node lowerLeft = currentNode.ll;
             Node upperLeft = currentNode.ul;
             Node upperRight = currentNode.ur;
             Node lowerRight = currentNode.lr;
             currentNode.ll = lowerRight;
             currentNode.lr = upperRight;
             currentNode.ur = upperLeft;
-            currentNode.ul = lowerLeft;
+            currentNode.ul = lowerLeft;*/
             currentNode.ll.id = 4;
             currentNode.ul.id = 1;
             currentNode.ur.id = 2;
             currentNode.lr.id = 3;
         }
         else{
+            currentNode.counterclockwise();//Look Here
 
             if(currentNode.ul.x > currentNode.x && currentNode.ul.y > currentNode.y){
                 x1 = currentNode.x + currentNode.size/2;
@@ -581,19 +583,19 @@ public class NestedGrid {
                 y4 = currentNode.y;
             }
             //currentNode.counterclockwise();
-            cWCount--;
+            //cWCount--;
             moveCCW(x2,y2,size,currentNode.ll);
             moveCCW(x3,y3,size,currentNode.ur);
             moveCCW(x4,y4,size,currentNode.lr);
             moveCCW(x1,y1,size,currentNode.ul);
-            Node lowerLeft = currentNode.ll;
+            /*Node lowerLeft = currentNode.ll;
             Node upperLeft = currentNode.ul;
             Node upperRight = currentNode.ur;
             Node lowerRight = currentNode.lr;
             currentNode.ll = upperLeft;
             currentNode.lr = lowerLeft;
             currentNode.ur = lowerRight;
-            currentNode.ul = upperRight;
+            currentNode.ul = upperRight;*/
             currentNode.ll.id = 4;
             currentNode.ul.id = 1;
             currentNode.ur.id = 2;
@@ -881,14 +883,14 @@ public class NestedGrid {
             swapY(currentNode.ll,y2,x2);
             swapY(currentNode.lr,y3,x3);
             swapY(currentNode.ur,y4,x4);//then add the Cswap
-            Node lowerLeft = currentNode.ll;
+            /*Node lowerLeft = currentNode.ll;
             Node upperLeft = currentNode.ul;
             Node upperRight = currentNode.ur;
             Node lowerRight = currentNode.lr;
             currentNode.ll = upperLeft;
             currentNode.lr = upperRight;
             currentNode.ur = lowerRight;
-            currentNode.ul = lowerLeft;
+            currentNode.ul = lowerLeft;*/
             currentNode.ll.id = 4;
             currentNode.ul.id = 1;
             currentNode.ur.id = 2;
@@ -900,14 +902,14 @@ public class NestedGrid {
             swapX(currentNode.ll, x2, y2);
             swapX(currentNode.lr, x3, y3);
             swapX(currentNode.ur, x4, y4);//then add the Cswaps
-            Node lowerLeft = currentNode.ll;
+            /*Node lowerLeft = currentNode.ll;
             Node upperLeft = currentNode.ul;
             Node upperRight = currentNode.ur;
             Node lowerRight = currentNode.lr;
             currentNode.ll = lowerRight;
             currentNode.lr = lowerLeft;
             currentNode.ur = upperLeft;
-            currentNode.ul = upperRight;
+            currentNode.ul = upperRight;*/
             currentNode.ll.id = 4;
             currentNode.ul.id = 1;
             currentNode.ur.id = 2;
@@ -924,25 +926,25 @@ public class NestedGrid {
         if(currentNode.lr.y == currentNode.y){y3 = true;}
         if(currentNode.ur.y == currentNode.y){y4 = true;}
 
-        if(x1 && y1){currentNode.ul.setCWR(2);}             //0
-        else if(x1 && !y1){currentNode.ul.setCWR(1);}       //3
-        else if(!x1 && y1){currentNode.ul.setCWR(3);}       //1
-        else {currentNode.ul.setCWR(0);}                    //2
+        if(x1 && y1){currentNode.ul.setCWR(2);}             //0//2
+        else if(x1 && !y1){currentNode.ul.setCWR(1);}       //3//1
+        else if(!x1 && y1){currentNode.ul.setCWR(3);}       //1//3
+        else {currentNode.ul.setCWR(0);}                    //2//0
 
-        if(x1 && y1){currentNode.ll.setCWR(3);}             //1
-        else if(x1 && !y1){currentNode.ll.setCWR(2);}       //0
-        else if(!x1 && y1){currentNode.ll.setCWR(0);}       //2
-        else {currentNode.ll.setCWR(1);}                    //3
+        if(x1 && y1){currentNode.ll.setCWR(3);}             //1//3
+        else if(x1 && !y1){currentNode.ll.setCWR(2);}       //0//2
+        else if(!x1 && y1){currentNode.ll.setCWR(0);}       //2//0
+        else {currentNode.ll.setCWR(1);}                    //3//1
 
-        if(x1 && y1){currentNode.lr.setCWR(0);}             //2
-        else if(x1 && !y1){currentNode.lr.setCWR(3);}       //1
-        else if(!x1 && y1){currentNode.lr.setCWR(1);}       //3
-        else {currentNode.lr.setCWR(2);}                    //0
+        if(x1 && y1){currentNode.lr.setCWR(0);}             //2//0
+        else if(x1 && !y1){currentNode.lr.setCWR(3);}       //1//3
+        else if(!x1 && y1){currentNode.lr.setCWR(1);}       //3//1
+        else {currentNode.lr.setCWR(2);}                    //0//2
 
-        if(x1 && y1){currentNode.ur.setCWR(1);}             //3
-        else if(x1 && !y1){currentNode.ur.setCWR(0);}       //2
-        else if(!x1 && y1){currentNode.ur.setCWR(2);}       //0
-        else {currentNode.ur.setCWR(3);}                    //1
+        if(x1 && y1){currentNode.ur.setCWR(1);}             //3//1
+        else if(x1 && !y1){currentNode.ur.setCWR(0);}       //2//0
+        else if(!x1 && y1){currentNode.ur.setCWR(2);}       //0//2
+        else {currentNode.ur.setCWR(3);}                    //1//3
 
     }
 
