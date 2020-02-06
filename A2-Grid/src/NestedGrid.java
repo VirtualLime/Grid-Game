@@ -19,6 +19,8 @@ public class NestedGrid {
     public static final int MAX_SIZE = 512;
     private ArrayList<Rectangle> allBlocks;
     private int levels, level, cWCount;
+    private Node root;
+    private Node currentNode;
 
     /**
      * Create a NestedGrid w/ 5 random colored squares to start
@@ -31,24 +33,22 @@ public class NestedGrid {
     public NestedGrid(int mxLevels, Color[] palette) {
         allBlocks = new ArrayList<Rectangle>();
         levels = mxLevels;
-        root = new Node(null, 0, 0, MAX_SIZE, 1);
-        root.createChildren();
-        root.select();
+        root = new Node(null, 0, 0, MAX_SIZE, 1);//Create the root Node
+        root.createChildren();//Creates the root Node's children Nodes
+        root.select();//Causes the root Node to be selected
         currentNode = root;
         level = 1;
         cWCount = 0;
-        /*for(int i = 0; i < allBlocks.size();i++){
-            Rectangle r = allBlocks.get(i);
-            System.out.println("Index: " + i + " selected: " + r.isSelected());
-        }*/
-
     }
 
-    private Node root;
-    private Node currentNode;
 
     /**
-     * An internal Node Class.
+     * An internal Node Class. It constructs a Rectangle for every Node,
+     * booleans for children, if the Node is selected, and if the Rectangle
+     * is visible. There are Nodes for the Node's parent and children.
+     * There are ints for x, y, size, cl (the colour id), id (the number
+     * associated with that child), and a rotation number. There is also
+     * a Color that is sent out for.
      */
     private class Node{
         private Rectangle rectangle;
@@ -57,6 +57,17 @@ public class NestedGrid {
         private int x,y,size,cl,id, cwRotation;
         private Color colour;
 
+        /**
+         * This is one of the two constructors. This is the one that will
+         * only be used at the beginning of NestedGrid, and fill construct
+         * the root Node.
+         * @param n the identity of the parent (null, as this is the parent)
+         * @param x1 the x-coordinate of the rectangle (starting point)
+         * @param y1 the y-coordinate of the rectangle (starting point)
+         * @param size1 The side length of the rectangle
+         * @param identity This is used in some methods to distinguish
+         *                 between child Nodes.
+         */
         private Node(Node n, int x1, int y1, int size1, int identity){
             id = identity;
             parent = n;
@@ -69,19 +80,31 @@ public class NestedGrid {
             children = false;
             selected = true;
             visible = true;
-            ul = null;
-            ur = null;
-            ll = null;
-            lr = null;
+            ul = null;//This child starts in the Upper Left corner of the parent
+            ur = null;//This child starts in the Upper right corner of the parent
+            ll = null;//This child starts in the lower Left corner of the parent
+            lr = null;//This child starts in the lower right corner of the parent
 
             rectangle = new Rectangle(x,y,size,colour,visible,selected);
             select();
             allBlocks.add(rectangle);
         }
 
+        /**
+         * This is one of the two constructors. This is the one that will
+         * only be used at the beginning of NestedGrid, and fill construct
+         * the root Node.
+         * @param n the identity of the parent
+         * @param x1 the x-coordinate of the rectangle (starting point)
+         * @param y1 the y-coordinate of the rectangle (starting point)
+         * @param size1 The side length of the rectangle
+         * @param identity This is used in some methods to distinguish
+         *                 between child Nodes.
+         */
         private Node(int x1, int y1, int size1, Node n, int identity ){
             id = identity;
             parent = n;
+            cwRotation = 400;
             x = x1;
             y = y1;
             cl = (int)(Math.random() * 8);
@@ -97,13 +120,23 @@ public class NestedGrid {
             rectangle = new Rectangle(x,y,size,colour,visible,selected);
             rectangle.setMAx(MAX_SIZE);
 
-            deselect();
-            allBlocks.add(rectangle);
+            deselect();//When initially created, the Nodes should not be selected.
+            allBlocks.add(rectangle);//add the new rectangle to the ArrayList of rectangles
         }
 
+        /**
+         * These methods adjust the cwRotation to account for an alteration
+         * in the Nodes position. The number goes up each time it rotates
+         * clockwise, and down each time it rotates counterclockwise.
+         */
         private void clockwise(){cwRotation++;}
         private void counterclockwise(){cwRotation--;}
 
+        /**
+         * This method creates children for this Node. The children are give starting
+         * points relative to the parent Node. When this happens, the parent is no
+         * longer visible.
+         */
         private void createChildren(){
             ul = new Node(x,y,size/2,this, 1);
             ur = new Node(x + size/2, y, size/2,this, 2);
@@ -112,10 +145,26 @@ public class NestedGrid {
             visible = false;
         }
 
+        /**
+         * This returns the id of the Node
+         */
         private int getID(){return id;}
 
+        /**
+         * When one of the flip operations takes place, the cwRotation needs
+         * to be corrected. That correction is done here based on a value sent
+         * to this method, by a calculation in the calling method.
+         * @param c Tthis is the replacement cwRotation number
+         */
         private void setCWR(int c){cwRotation = c;}
 
+        /**
+         * There were previous methods that looked for the return of a
+         * specific Node. In the event one of those calls returns this
+         * method is still present.
+         * @param p the number for the requested Node
+         * @return the requested Node or null is returned
+         */
         private Node selectNode(int p){
             switch(p){
                 case 1:
@@ -146,11 +195,19 @@ public class NestedGrid {
             rectangle.setY(y1);
         }
 
+        /**
+         * This switches the boolean in this inner class, and
+         * its connected rectangle to show as selected.
+         */
         private void select(){
             rectangle.selected(true);
             selected = true;
         }
 
+        /**
+         * This switches the boolean in this inner class, and
+         * its connected rectangle to show as not selected.
+         */
         private void deselect(){
             rectangle.selected(false);
             selected = false;
@@ -162,10 +219,6 @@ public class NestedGrid {
      * The selected square moves up to be its parent (if possible)
      */
     public void moveUp() {
-        /*for(int i = 0; i < allBlocks.size();i++){
-            Rectangle r = allBlocks.get(i);
-            System.out.println("Index: " + i + " selected: " + r.isSelected());
-        }*/
         if(level <= 1 || currentNode.parent == null){
             System.out.println("Move up failed");
             return;}
