@@ -27,7 +27,8 @@ public class GridRenderer extends JPanel implements GridController.Updater {
         scoreLabel = new JLabel("Score: ");
 
         northPanel = new JPanel();
-        northPanel.setBackground(new Color(252, 246, 212, 80));
+        //This randomly glitches out for whatever reason, so I set the color to a static white color
+        northPanel.setBackground(new Color(255, 255, 255, 255));
         northPanel.add(scoreLabel);
         northPanel.add(scoreField);
         add(northPanel, BorderLayout.NORTH);
