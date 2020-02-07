@@ -252,7 +252,6 @@ public class NestedGrid {
         currentNode = currentNode.parent;
         currentNode.select();
         level--;
-       // System.out.println("level: " + level);
     }
 
     /**
@@ -859,6 +858,14 @@ public class NestedGrid {
         }
     }
 
+    /**
+     * This is a method for adjusting Node coordinates through a horizontal flip.
+     * It compares the coordinates to what they should be, and makes the necessary changes.
+     * It also corrcts the cwRoatation
+     * @param n
+     * @param sameX
+     * @param sameY
+     */
     public void swapX(Node n, boolean sameX, boolean sameY){
         Node parent = n.parent;
         boolean x1=false;
@@ -931,7 +938,9 @@ public class NestedGrid {
     }
 
     /**
-     * This is a method just for adjusting the x components.
+     * This is a method just for adjusting the Node through a vertical flip.
+     * It compares the coordinates to what they should be, and replaces them as needed.
+     * It also corrcts the cwRoatation
      * @param n
      * @param sameY
      * @param sameX
