@@ -754,19 +754,19 @@ public class NestedGrid {
         else if(!x1 && y1){n.ul.setCWR(1);}
         else {n.ul.setCWR(2);}
 
-        if(x1 && y1){n.ll.setCWR(1);}
-        else if(x1 && !y1){n.ll.setCWR(0);}
-        else if(!x1 && y1){n.ll.setCWR(2);}
+        if(x2 && y2){n.ll.setCWR(1);}//
+        else if(x2 && !y2){n.ll.setCWR(0);}
+        else if(!x2 && y2){n.ll.setCWR(2);}
         else {n.ll.setCWR(3);}
 
-        if(x1 && y1){n.lr.setCWR(2);}
-        else if(x1 && !y1){n.lr.setCWR(1);}
-        else if(!x1 && y1){n.lr.setCWR(3);}
+        if(x3 && y3){n.lr.setCWR(2);}//
+        else if(x3 && !y3){n.lr.setCWR(1);}
+        else if(!x3 && y3){n.lr.setCWR(3);}
         else {n.lr.setCWR(0);}
 
-        if(x1 && y1){n.ur.setCWR(3);}
-        else if(x1 && !y1){n.ur.setCWR(2);}
-        else if(!x1 && y1){n.ur.setCWR(0);}
+        if(x4 && y4){n.ur.setCWR(3);}//
+        else if(x4 && !y4){n.ur.setCWR(2);}
+        else if(!x4 && y4){n.ur.setCWR(0);}
         else {n.ur.setCWR(1);}
         System.out.println("reached swapx end");
         return;
@@ -826,19 +826,19 @@ public class NestedGrid {
         else if(!x1 && y1){n.ul.setCWR(1);}
         else {n.ul.setCWR(2);}
 
-        if(x1 && y1){n.ll.setCWR(1);}
-        else if(x1 && !y1){n.ll.setCWR(0);}
-        else if(!x1 && y1){n.ll.setCWR(2);}
+        if(x2 && y2){n.ll.setCWR(1);}//
+        else if(x2 && !y2){n.ll.setCWR(0);}
+        else if(!x2 && y2){n.ll.setCWR(2);}
         else {n.ll.setCWR(3);}
 
-        if(x1 && y1){n.lr.setCWR(2);}
-        else if(x1 && !y1){n.lr.setCWR(1);}
-        else if(!x1 && y1){n.lr.setCWR(3);}
+        if(x3 && y3){n.lr.setCWR(2);}//
+        else if(x3 && !y3){n.lr.setCWR(1);}
+        else if(!x3 && y3){n.lr.setCWR(3);}
         else {n.lr.setCWR(0);}
 
-        if(x1 && y1){n.ur.setCWR(3);}
-        else if(x1 && !y1){n.ur.setCWR(2);}
-        else if(!x1 && y1){n.ur.setCWR(0);}
+        if(x4 && y4){n.ur.setCWR(3);}//
+        else if(x4 && !y4){n.ur.setCWR(2);}
+        else if(!x4 && y4){n.ur.setCWR(0);}
         else {n.ur.setCWR(1);}
         System.out.println("reached swapy end");
 
@@ -926,25 +926,25 @@ public class NestedGrid {
         if(currentNode.lr.y == currentNode.y){y3 = true;}
         if(currentNode.ur.y == currentNode.y){y4 = true;}
 
-        if(x1 && y1){currentNode.ul.setCWR(2);}             //0//2
-        else if(x1 && !y1){currentNode.ul.setCWR(1);}       //3//1
-        else if(!x1 && y1){currentNode.ul.setCWR(3);}       //1//3
-        else {currentNode.ul.setCWR(0);}                    //2//0
+        if(x1 && y1){currentNode.ul.setCWR(3);}             //0//2
+        else if(x1 && !y1){currentNode.ul.setCWR(2);}       //3//1
+        else if(!x1 && y1){currentNode.ul.setCWR(0);}       //1//3
+        else {currentNode.ul.setCWR(1);}                    //2//0
 
-        if(x1 && y1){currentNode.ll.setCWR(3);}             //1//3
-        else if(x1 && !y1){currentNode.ll.setCWR(2);}       //0//2
-        else if(!x1 && y1){currentNode.ll.setCWR(0);}       //2//0
-        else {currentNode.ll.setCWR(1);}                    //3//1
+        if(x2 && y2){currentNode.ll.setCWR(0);}             //1//3
+        else if(x2 && !y2){currentNode.ll.setCWR(3);}       //0//2
+        else if(!x2 && y2){currentNode.ll.setCWR(1);}       //2//0
+        else {currentNode.ll.setCWR(2);}                    //3//1
 
-        if(x1 && y1){currentNode.lr.setCWR(0);}             //2//0
-        else if(x1 && !y1){currentNode.lr.setCWR(3);}       //1//3
-        else if(!x1 && y1){currentNode.lr.setCWR(1);}       //3//1
-        else {currentNode.lr.setCWR(2);}                    //0//2
+        if(x3 && y3){currentNode.lr.setCWR(1);}             //2//0
+        else if(x3 && !y3){currentNode.lr.setCWR(0);}       //1//3
+        else if(!x3 && y3){currentNode.lr.setCWR(2);}       //3//1
+        else {currentNode.lr.setCWR(3);}                    //0//2
 
-        if(x1 && y1){currentNode.ur.setCWR(1);}             //3//1
-        else if(x1 && !y1){currentNode.ur.setCWR(0);}       //2//0
-        else if(!x1 && y1){currentNode.ur.setCWR(2);}       //0//2
-        else {currentNode.ur.setCWR(3);}                    //1//3
+        if(x4 && y4){currentNode.ur.setCWR(2);}             //3//1
+        else if(x4 && !y4){currentNode.ur.setCWR(1);}       //2//0
+        else if(!x4 && y4){currentNode.ur.setCWR(3);}       //0//2
+        else {currentNode.ur.setCWR(0);}                    //1//3
 
     }
 
