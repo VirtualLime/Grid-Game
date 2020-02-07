@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ad470a32-ca52-4f9a-a4c5-f7055cd196c9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GridRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GridRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NestedGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NestedGrid.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -150,7 +150,14 @@
       <option name="project" value="LOCAL" />
       <updated>1581105207810</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Very small change to the score color">
+      <created>1581106174064</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1581106174064</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -173,7 +180,8 @@
     <MESSAGE value="Fixed movement issue, started cleaning and commenting." />
     <MESSAGE value="Hopefully fixed flips issue, changed code in flipY and flipX and swap" />
     <MESSAGE value="Hopefully everything is fixed and working, changed code in rotates to keep track of position" />
-    <option name="LAST_COMMIT_MESSAGE" value="Hopefully everything is fixed and working, changed code in rotates to keep track of position" />
+    <MESSAGE value="Very small change to the score color" />
+    <option name="LAST_COMMIT_MESSAGE" value="Very small change to the score color" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
