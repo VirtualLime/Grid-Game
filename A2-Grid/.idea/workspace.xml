@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ad470a32-ca52-4f9a-a4c5-f7055cd196c9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GridController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GridController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/NestedGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NestedGrid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Rectangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Rectangle.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -124,7 +122,14 @@
       <option name="project" value="LOCAL" />
       <updated>1581037149890</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Fixed movement issue, started cleaning and commenting.">
+      <created>1581097920774</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1581097920775</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -144,7 +149,8 @@
     <MESSAGE value="A different version. All methods appear to work. Code still needs to be cleaned and comments need to be added." />
     <MESSAGE value="Fixed a rotation issue" />
     <MESSAGE value="Hopefully Fixed a flipping issue" />
-    <option name="LAST_COMMIT_MESSAGE" value="Hopefully Fixed a flipping issue" />
+    <MESSAGE value="Fixed movement issue, started cleaning and commenting." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed movement issue, started cleaning and commenting." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
