@@ -664,18 +664,26 @@ public class NestedGrid {
 
 
         if(clockwise){
-            currentNode.clockwise();
+            //currentNode.clockwise();
             moveCW(x1,y1,size,currentNode.ul);
             moveCW(x2,y2,size,currentNode.ll);
             moveCW(x3,y3,size,currentNode.ur);
             moveCW(x4,y4,size,currentNode.lr);
+            Node lowerLeft = currentNode.ll;
+            Node upperLeft = currentNode.ul;
+            Node upperRight = currentNode.ur;
+            Node lowerRight = currentNode.lr;
+            currentNode.ll = lowerRight;
+            currentNode.lr = upperRight;
+            currentNode.ur = upperLeft;
+            currentNode.ul = lowerLeft;
             currentNode.ll.id = 4;
             currentNode.ul.id = 1;
             currentNode.ur.id = 2;
             currentNode.lr.id = 3;
         }
         else{
-            currentNode.counterclockwise();
+            //currentNode.counterclockwise();
 
             if(currentNode.ul.x > currentNode.x && currentNode.ul.y > currentNode.y){
                 x1 = currentNode.x + currentNode.size/2;
@@ -748,6 +756,14 @@ public class NestedGrid {
             moveCCW(x3,y3,size,currentNode.ur);
             moveCCW(x4,y4,size,currentNode.lr);
             moveCCW(x1,y1,size,currentNode.ul);
+            Node lowerLeft = currentNode.ll;
+            Node upperLeft = currentNode.ul;
+            Node upperRight = currentNode.ur;
+            Node lowerRight = currentNode.lr;
+            currentNode.ll = upperLeft;
+            currentNode.lr = lowerLeft;
+            currentNode.ur = lowerRight;
+            currentNode.ul = upperRight;
             currentNode.ll.id = 4;
             currentNode.ul.id = 1;
             currentNode.ur.id = 2;
@@ -770,13 +786,24 @@ public class NestedGrid {
             return;
         }
         else{
-            n.clockwise();
+            //n.clockwise();
+            Node lowerLeft = n.ll;
+            Node upperLeft = n.ul;
+            Node upperRight = n.ur;
+            Node lowerRight = n.lr;
+            n.ll = lowerRight;
+            n.lr = upperRight;
+            n.ur = upperLeft;
+            n.ul = lowerLeft;
+            n.ll.id = 4;
+            n.ul.id = 1;
+            n.ur.id = 2;
+            n.lr.id = 3;
             if(Math.abs(n.cwRotation)%4 == 0) {
                 moveCW(x1 + size / 2, y1, size / 2, n.ur);
                 moveCW(x1 + size / 2, y1 + size / 2, size / 2, n.lr);
                 moveCW(x1, y1 + size / 2, size / 2, n.ll);
                 moveCW(x1, y1, size / 2, n.ul);
-
                 return;
             }
             else if (Math.abs(n.cwRotation) % 4 == 3) {
@@ -784,7 +811,6 @@ public class NestedGrid {
                 moveCW(x1+size/2,y1+size/2,size/2,n.ll);
                 moveCW(x1,y1+size/2,size/2,n.ul);
                 moveCW(x1,y1,size/2,n.ur);
-
                 return;
             }
             else if (Math.abs(n.cwRotation) % 4 == 2) {
@@ -792,7 +818,6 @@ public class NestedGrid {
                 moveCW(x1+size/2,y1+size/2,size/2,n.ul);
                 moveCW(x1,y1+size/2,size/2,n.ur);
                 moveCW(x1,y1,size/2,n.lr);
-
                 return;
             }
             else{
@@ -800,7 +825,6 @@ public class NestedGrid {
                 moveCW(x1+size/2,y1+size/2,size/2,n.ur);
                 moveCW(x1,y1+size/2,size/2,n.lr);
                 moveCW(x1,y1,size/2,n.ll);
-
                 return;
             }
         }
@@ -821,7 +845,19 @@ public class NestedGrid {
             return;
         }
         else{
-            n.counterclockwise();
+            //n.counterclockwise();
+            Node lowerLeft = n.ll;
+            Node upperLeft = n.ul;
+            Node upperRight = n.ur;
+            Node lowerRight = n.lr;
+            n.ll = upperLeft;
+            n.lr = lowerLeft;
+            n.ur = lowerRight;
+            n.ul = upperRight;
+            n.ll.id = 4;
+            n.ul.id = 1;
+            n.ur.id = 2;
+            n.lr.id = 3;
             System.out.println("CWR: " + n.cwRotation + " %4: " + n.cwRotation%4);
             if(Math.abs(n.cwRotation)%4 == 0) {
                 moveCCW(x1,y1,size/2,n.ul);
