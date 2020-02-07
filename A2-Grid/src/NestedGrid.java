@@ -855,6 +855,11 @@ public class NestedGrid {
                 moveCCW(x1,y1+size/2,size/2,n.lr);
                 return;
             }
+
+
+
+
+
         }
     }
 
@@ -906,6 +911,7 @@ public class NestedGrid {
         swapX(n.lr,x3,y3);
         swapX(n.ur,x4,y4);
 
+      /*
         if(n.ul.x == n.x){x1 = true;}
         if(n.ll.x == n.x){x2 = true;}
         if(n.lr.x == n.x){x3 = true;}
@@ -914,6 +920,7 @@ public class NestedGrid {
         if(n.ll.y == n.y){y2 = true;}
         if(n.lr.y == n.y){y3 = true;}
         if(n.ur.y == n.y){y4 = true;}
+
 
         if(x1 && y1){n.ul.setCWR(0);}
         else if(x1 && !y1){n.ul.setCWR(3);}
@@ -933,7 +940,22 @@ public class NestedGrid {
         if(x4 && y4){n.ur.setCWR(3);}//
         else if(x4 && !y4){n.ur.setCWR(2);}
         else if(!x4 && y4){n.ur.setCWR(0);}
-        else {n.ur.setCWR(1);}
+        else {n.ur.setCWR(1);}*/
+
+
+        Node lowerLeft = n.ll;
+        Node upperLeft = n.ul;
+        Node upperRight = n.ur;
+        Node lowerRight = n.lr;
+        n.ll = lowerRight;
+        n.lr = lowerLeft;
+        n.ur = upperLeft;
+        n.ul = upperRight;
+        n.ll.id = 4;
+        n.ul.id = 1;
+        n.ur.id = 2;
+        n.lr.id = 3;
+
         return;
     }
 
@@ -982,7 +1004,7 @@ public class NestedGrid {
         swapY(n.ll,y2,x2);
         swapY(n.lr,y3,x3);
         swapY(n.ur,y4,x4);
-        if(n.ul.x == n.x){x1 = true;}
+/*        if(n.ul.x == n.x){x1 = true;}
         if(n.ll.x == n.x){x2 = true;}
         if(n.lr.x == n.x){x3 = true;}
         if(n.ur.x == n.x){x4 = true;}
@@ -1009,7 +1031,20 @@ public class NestedGrid {
         if(x4 && y4){n.ur.setCWR(3);}
         else if(x4 && !y4){n.ur.setCWR(2);}
         else if(!x4 && y4){n.ur.setCWR(0);}
-        else {n.ur.setCWR(1);}
+        else {n.ur.setCWR(1);}*/
+
+        Node lowerLeft = n.ll;
+        Node upperLeft = n.ul;
+        Node upperRight = n.ur;
+        Node lowerRight = n.lr;
+        n.ll = upperLeft;
+        n.lr = upperRight;
+        n.ur = lowerRight;
+        n.ul = lowerLeft;
+        n.ll.id = 4;
+        n.ul.id = 1;
+        n.ur.id = 2;
+        n.lr.id = 3;
 
 
         return;
@@ -1053,6 +1088,14 @@ public class NestedGrid {
             swapY(currentNode.ll,y2,x2);
             swapY(currentNode.lr,y3,x3);
             swapY(currentNode.ur,y4,x4);
+            Node lowerLeft = currentNode.ll;
+            Node upperLeft = currentNode.ul;
+            Node upperRight = currentNode.ur;
+            Node lowerRight = currentNode.lr;
+            currentNode.ll = upperLeft;
+            currentNode.lr = upperRight;
+            currentNode.ur = lowerRight;
+            currentNode.ul = lowerLeft;
             currentNode.ll.id = 4;
             currentNode.ul.id = 1;
             currentNode.ur.id = 2;
@@ -1063,6 +1106,14 @@ public class NestedGrid {
             swapX(currentNode.ll, x2, y2);
             swapX(currentNode.lr, x3, y3);
             swapX(currentNode.ur, x4, y4);
+            Node lowerLeft = currentNode.ll;
+            Node upperLeft = currentNode.ul;
+            Node upperRight = currentNode.ur;
+            Node lowerRight = currentNode.lr;
+            currentNode.ll = lowerRight;
+            currentNode.lr = lowerLeft;
+            currentNode.ur = upperLeft;
+            currentNode.ul = upperRight;
             currentNode.ll.id = 4;
             currentNode.ul.id = 1;
             currentNode.ur.id = 2;
@@ -1079,7 +1130,7 @@ public class NestedGrid {
         if(currentNode.lr.y == currentNode.y){y3 = true;}
         if(currentNode.ur.y == currentNode.y){y4 = true;}
 
-        if(x1 && y1){currentNode.ul.setCWR(3);}
+/*        if(x1 && y1){currentNode.ul.setCWR(3);}
         else if(x1 && !y1){currentNode.ul.setCWR(2);}
         else if(!x1 && y1){currentNode.ul.setCWR(0);}
         else {currentNode.ul.setCWR(1);}
@@ -1097,7 +1148,7 @@ public class NestedGrid {
         if(x4 && y4){currentNode.ur.setCWR(2);}
         else if(x4 && !y4){currentNode.ur.setCWR(1);}
         else if(!x4 && y4){currentNode.ur.setCWR(3);}
-        else {currentNode.ur.setCWR(0);}
+        else {currentNode.ur.setCWR(0);}*/
 
     }
 }
