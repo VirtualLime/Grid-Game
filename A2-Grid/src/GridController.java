@@ -4,6 +4,7 @@ import java.awt.event.KeyListener;
 import java.lang.ref.WeakReference;
 
 //class to handle the commands for the Game
+ // Provided for the assignment, slightly altered by Tyler Arsenault and Jordan Luke
 public class GridController implements KeyListener {
 
     /**

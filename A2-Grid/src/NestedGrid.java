@@ -5,6 +5,7 @@ import java.util.ArrayList;
  * The back-end for the Grid Game
  * Each Square in the Grid Game can have either 0 or 4
  * Children - it's a quad tree
+ * Provided for the assignment, altered by Tyler Arsenault and Jordan Luke
  *
  **/
 public class NestedGrid {
@@ -16,12 +17,18 @@ public class NestedGrid {
      *    |  LL |  LR |
      *    |_____|_____|
      */
+    /*
+    The MAX_SIZE is the maximum length for the root node, allBlocks is an ArrayList
+    containing all of the rectangles, levels indicates the maximum number of levels
+    allowed, level is the level that the current selected Node/Rectangle is on,
+    root is the root Node, currentNode, is the Node currently selected (can be the
+    root).
+     */
     public static final int MAX_SIZE = 512;
     private ArrayList<Rectangle> allBlocks;
-    private int levels, level, cWCount;
+    private int levels, level;//, //cWCount;
     private Node root;
     private Node currentNode;
-   // private int numRotations = 0;
 
     /**
      * Create a NestedGrid w/ 5 random colored squares to start
@@ -40,7 +47,7 @@ public class NestedGrid {
         root.select();//Causes the root Node to be selected
         currentNode = root;
         level = 1;
-        cWCount = 0;
+        //cWCount = 0;
     }
 
 
@@ -54,7 +61,7 @@ public class NestedGrid {
      */
     private class Node{
         private Rectangle rectangle;
-        private boolean children, selected, visible;
+        private boolean children, selected, visible;//children was for an alternate method
         private Node parent, ul, ur, ll, lr;
         private int x,y,size,cl,id, cwRotation;
         private Color colour;
@@ -187,11 +194,19 @@ public class NestedGrid {
         private int getX(){return x;}
         private int getY(){return y;}
 
+        /**
+         * This method alters the x for the node
+         * @param x1
+         */
         private void setX(int x1){
             x = x1;
             rectangle.setX(x1);
         }
 
+        /**
+         * This method alters the y for the node
+         * @param y1
+         */
         private void setY(int y1){
             y = y1;
             rectangle.setY(y1);
@@ -215,10 +230,19 @@ public class NestedGrid {
             selected = false;
         }
 
+        /**
+         * This is an alternate method that can be used to determine if the Node
+         * has children
+         * @return boolean children
+         */
+        private boolean hasChildren(){return children;}
+
     }
 
     /**
-     * The selected square moves up to be its parent (if possible)
+     * The selected square moves up to be its parent (if possible). If the selected Node
+     * is the root, it will not move up, and will inform the User that it can't move up.
+     * If the level does change, the method alters the value for the current level int
      */
     public void moveUp() {
         if(level <= 1 || currentNode.parent == null){
@@ -226,155 +250,307 @@ public class NestedGrid {
             return;}
         currentNode.deselect();
         currentNode = currentNode.parent;
-        //currentNode = currentNode.selectNode(1);
-        //assert currentNode != null;
         currentNode.select();
-        /*for(int i = 0; i < allBlocks.size();i++){
-            Rectangle r = allBlocks.get(i);
-            System.out.println("Moved up: Index: " + i + " selected: " + r.isSelected());
-        }*/
         level--;
-        System.out.println("level: " + level);
+       // System.out.println("level: " + level);
     }
 
     /**
      * the selected square moves into the upper right child (if possible)
-     * of the currently selected square
+     * of the currently selected square. It will select whichever child
+     * (if any) is currently in the upper right. If the current Node has
+     * no children, it will not move down, and will so inform the user.
+     * If it does move down, it will also adjust the level int accordingly
      */
     public void moveDown() {
-        /*for(int i = 0; i < allBlocks.size();i++){
-            Rectangle r = allBlocks.get(i);
-            System.out.println("Index: " + i + " selected: " + r.isSelected());
-        }*/
         if(level >= levels || currentNode.ll == null){
             System.out.println("Move down failed");
             return;
         }
         currentNode.deselect();
-        currentNode = currentNode.ul;
+        if(currentNode.ul.x > currentNode.x && currentNode.ul.y == currentNode.y){
+            currentNode = currentNode.ul;
+        }
+        else if(currentNode.ll.x > currentNode.x && currentNode.ll.y == currentNode.y){
+            currentNode = currentNode.ll;
+        }
+        else if(currentNode.ur.x > currentNode.x && currentNode.ur.y == currentNode.y){
+            currentNode = currentNode.ur;
+        }
+        else{currentNode = currentNode.lr;}
         currentNode.select();
         level++;
-        /*for(int i = 0; i < allBlocks.size();i++){
-            Rectangle r = allBlocks.get(i);
-            System.out.println("Moved down: Index: " + i + " selected: " + r.isSelected());
-        }*/
-        System.out.println("Level: " + level);
     }
 
     /**
-     * the selected square moves counter clockwise to a sibling
+     * the selected square moves counter clockwise to a sibling. It checks the
+     * value on the current Node, and will move to the appropriate next Node.
      */
     public void moveLeft() {
-        /*for(int i = 0; i < allBlocks.size();i++){
-            Rectangle r = allBlocks.get(i);
-            System.out.println("Move left: Index: " + i + " selected: " + r.isSelected());
-        }*/
         if(level == 1 || currentNode.parent == null){
             System.out.println("At root, no movement possible");
             return;
         }
-        if(currentNode.getID() == 4){//currentNode == currentNode.parent.ll
-            currentNode.deselect();
-            currentNode = currentNode.parent.lr;
-            currentNode.select();
-           /* for(int i = 0; i < allBlocks.size();i++){
-                Rectangle r = allBlocks.get(i);
-                System.out.println("Index: " + i + " selected: " + r.isSelected());
-            }*/
-            System.out.println("Level: " + level);
-            return;
+        Node parent = currentNode.parent;
+        Node ul = currentNode.parent.ul;
+        Node ll = currentNode.parent.ll;
+        Node lr = currentNode.parent.lr;
+        Node ur = currentNode.parent.ur;
+        boolean x1 = false;
+        boolean x2 = false;
+        boolean x3 = false;
+        boolean x4 = false;
+        boolean y1 = false;
+        boolean y2 = false;
+        boolean y3 = false;
+        boolean y4 = false;
+        if(ul.x == parent.x){x1 = true;}
+        if(ll.x == parent.x){x2 = true;}
+        if(lr.x == parent.x){x3 = true;}
+        if(ur.x == parent.x){x4 = true;}
+        if(ul.x == parent.y){y1 = true;}
+        if(ll.x == parent.y){y2 = true;}
+        if(lr.x == parent.y){y3 = true;}
+        if(ur.x == parent.y){y4 = true;}
+        if(currentNode.x == parent.x && currentNode.y == parent.y){
+            if (x1 && !y1) {
+                currentNode.deselect();
+                currentNode = ul;
+                currentNode.select();
+                return;
+            }
+            else if (x2 && !y2) {
+                currentNode.deselect();
+                currentNode = ll;
+                currentNode.select();
+                return;
+            }
+            else if (x3 && !y3) {
+                currentNode.deselect();
+                currentNode = lr;
+                currentNode.select();
+                return;
+            }
+            else if (x4 && !y4) {
+                currentNode.deselect();
+                currentNode = ur;
+                currentNode.select();
+                return;
+            }
         }
-        else if(currentNode.getID() == 1){//currentNode == currentNode.parent.ul
-            currentNode.deselect();
-            currentNode = currentNode.parent.ll;//make the rest of the alterations
-            currentNode.select();
-            /*for(int i = 0; i < allBlocks.size();i++){
-                Rectangle r = allBlocks.get(i);
-                System.out.println("Index: " + i + " selected: " + r.isSelected());
-            }*/
-            System.out.println("Level: " + level);
-            return;
+        else if(currentNode.x != parent.x && currentNode.y == parent.y){
+            if (x1 && y1) {
+                currentNode.deselect();
+                currentNode = ul;
+                currentNode.select();
+                return;
+            }
+            else if (x2 && y2) {
+                currentNode.deselect();
+                currentNode = ll;
+                currentNode.select();
+                return;
+            }
+            else if (x3 && y3) {
+                currentNode.deselect();
+                currentNode = lr;
+                currentNode.select();
+                return;
+            }
+            else if (x4 && y4) {
+                currentNode.deselect();
+                currentNode = ur;
+                currentNode.select();
+                return;
+            }
         }
-        else if(currentNode.getID() == 2){//currentNode == currentNode.parent.ur
-            currentNode.deselect();
-            currentNode = currentNode.parent.ul;//make the rest of the alterations
-            currentNode.select();
-           /* for(int i = 0; i < allBlocks.size();i++){
-                Rectangle r = allBlocks.get(i);
-                System.out.println("Index: " + i + " selected: " + r.isSelected());
-            }*/
-            System.out.println("Level: " + level);
-            return;
+        else if(currentNode.x == parent.x && currentNode.y != parent.y){
+            if (!x1 && !y1) {
+                currentNode.deselect();
+                currentNode = ul;
+                currentNode.select();
+                return;
+            }
+            else if (!x2 && !y2) {
+                currentNode.deselect();
+                currentNode = ll;
+                currentNode.select();
+                return;
+            }
+            else if (!x3 && !y3) {
+                currentNode.deselect();
+                currentNode = lr;
+                currentNode.select();
+                return;
+            }
+            else if (!x4 && !y4) {
+                currentNode.deselect();
+                currentNode = ur;
+                currentNode.select();
+                return;
+            }
         }
-        else if(currentNode.getID() == 3){//currentNode == currentNode.parent.lr
-            currentNode.deselect();
-            currentNode = currentNode.parent.ur;//make the rest of the alterations
-            currentNode.select();
-            /*for(int i = 0; i < allBlocks.size();i++){
-                Rectangle r = allBlocks.get(i);
-                System.out.println("Index: " + i + " selected: " + r.isSelected());
-            }*/
-            System.out.println("Level: " + level);
-            return;
+        else{
+            if (!x1 && y1) {
+                currentNode.deselect();
+                currentNode = ul;
+                currentNode.select();
+                return;
+            }
+            else if (!x2 && y2) {
+                currentNode.deselect();
+                currentNode = ll;
+                currentNode.select();
+                return;
+            }
+            else if (!x3 && y3) {
+                currentNode.deselect();
+                currentNode = lr;
+                currentNode.select();
+                return;
+            }
+            else if (!x4 && y4) {
+                currentNode.deselect();
+                currentNode = ur;
+                currentNode.select();
+                return;
+            }
         }
-        return;
     }
 
     /**
-     * Move the selected square to the next sibling clockwise
+     * Move the selected square to the next sibling clockwise. It checks the
+     *      * value on the current Node, and will move to the appropriate next Node.
      */
     public void moveRight() {
-        /*for(int i = 0; i < allBlocks.size();i++){
-            Rectangle r = allBlocks.get(i);
-            System.out.println("Move right: Index: " + i + " selected: " + r.isSelected());
-        }*/
         if(level == 1 || currentNode.parent == null){
             System.out.println("At root, no movement possible");
             return;
         }
-        if(currentNode.getID() == 4){//currentNode == currentNode.parent.ll
-            currentNode.deselect();
-            currentNode = currentNode.parent.ul;
-            currentNode.select();
-            /*for(int i = 0; i < allBlocks.size();i++){
-                Rectangle r = allBlocks.get(i);
-                System.out.println("Index: " + i + " selected: " + r.isSelected());
-            }*/
-            System.out.println("Level: " + level);
-            return;
+        Node parent = currentNode.parent;
+        Node ul = currentNode.parent.ul;
+        Node ll = currentNode.parent.ll;
+        Node lr = currentNode.parent.lr;
+        Node ur = currentNode.parent.ur;
+        boolean x1 = false;
+        boolean x2 = false;
+        boolean x3 = false;
+        boolean x4 = false;
+        boolean y1 = false;
+        boolean y2 = false;
+        boolean y3 = false;
+        boolean y4 = false;
+        if(ul.x == parent.x){x1 = true;}
+        if(ll.x == parent.x){x2 = true;}
+        if(lr.x == parent.x){x3 = true;}
+        if(ur.x == parent.x){x4 = true;}
+        if(ul.x == parent.y){y1 = true;}
+        if(ll.x == parent.y){y2 = true;}
+        if(lr.x == parent.y){y3 = true;}
+        if(ur.x == parent.y){y4 = true;}
+        if(currentNode.x == parent.x && currentNode.y == parent.y){
+            if (!x1 && y1) {
+                currentNode.deselect();
+                currentNode = ul;
+                currentNode.select();
+                return;
+            }
+            else if (!x2 && y2) {
+                currentNode.deselect();
+                currentNode = ll;
+                currentNode.select();
+                return;
+            }
+            else if (!x3 && y3) {
+                currentNode.deselect();
+                currentNode = lr;
+                currentNode.select();
+                return;
+            }
+            else if (!x4 && y4) {
+                currentNode.deselect();
+                currentNode = ur;
+                currentNode.select();
+                return;
+            }
         }
-        else if(currentNode.getID() == 1){//currentNode == currentNode.parent.ul
-            currentNode.deselect();
-            currentNode = currentNode.parent.ur;
-            currentNode.select();
-            /*for(int i = 0; i < allBlocks.size();i++){
-                Rectangle r = allBlocks.get(i);
-                System.out.println("Index: " + i + " selected: " + r.isSelected());
-            }*/
-            System.out.println("Level: " + level);
-            return;
+        else if(currentNode.x != parent.x && currentNode.y == parent.y){
+            if (!x1 && !y1) {
+                currentNode.deselect();
+                currentNode = ul;
+                currentNode.select();
+                return;
+            }
+            else if (!x2 && !y2) {
+                currentNode.deselect();
+                currentNode = ll;
+                currentNode.select();
+                return;
+            }
+            else if (!x3 && !y3) {
+                currentNode.deselect();
+                currentNode = lr;
+                currentNode.select();
+                return;
+            }
+            else if (!x4 && !y4) {
+                currentNode.deselect();
+                currentNode = ur;
+                currentNode.select();
+                return;
+            }
         }
-        else if(currentNode.getID() == 2){//currentNode == currentNode.parent.ur
-            currentNode.deselect();
-            currentNode = currentNode.parent.lr;//make the rest of the alterations
-            currentNode.select();
-            /*for(int i = 0; i < allBlocks.size();i++){
-                Rectangle r = allBlocks.get(i);
-                System.out.println("Index: " + i + " selected: " + r.isSelected());
-            }*/
-            System.out.println("Level: " + level);
-            return;
+        else if(currentNode.x == parent.x && currentNode.y != parent.y){
+            if (x1 && y1) {
+                currentNode.deselect();
+                currentNode = ul;
+                currentNode.select();
+                return;
+            }
+            else if (x2 && y2) {
+                currentNode.deselect();
+                currentNode = ll;
+                currentNode.select();
+                return;
+            }
+            else if (x3 && y3) {
+                currentNode.deselect();
+                currentNode = lr;
+                currentNode.select();
+                return;
+            }
+            else if (x4 && y4) {
+                currentNode.deselect();
+                currentNode = ur;
+                currentNode.select();
+                return;
+            }
         }
-        else if(currentNode.getID() == 3){//currentNode == currentNode.parent.lr
-            currentNode.deselect();
-            currentNode = currentNode.parent.ll;//make the rest of the alterations
-            currentNode.select();
-            /*for(int i = 0; i < allBlocks.size();i++){
-                Rectangle r = allBlocks.get(i);
-                System.out.println("Index: " + i + " selected: " + r.isSelected());
-            }*/
-            System.out.println("Level: " + level);
-            return;
+        else{
+            if (x1 && !y1) {
+                currentNode.deselect();
+                currentNode = ul;
+                currentNode.select();
+                return;
+            }
+            else if (x2 && !y2) {
+                currentNode.deselect();
+                currentNode = ll;
+                currentNode.select();
+                return;
+            }
+            else if (x3 && !y3) {
+                currentNode.deselect();
+                currentNode = lr;
+                currentNode.select();
+                return;
+            }
+            else if (x4 && !y4) {
+                currentNode.deselect();
+                currentNode = ur;
+                currentNode.select();
+                return;
+            }
         }
         return;
     }
@@ -605,7 +781,7 @@ public class NestedGrid {
 //            moveCCW(x4,y4,size,currentNode.ul);
 //            moveCCW(x1,y1,size,currentNode.ur);
         }
-        System.out.println("CW count: " + cWCount);
+        //System.out.println("CW count: " + cWCount);
     }
 
     public void moveCW(int x1, int y1, int size, Node n){

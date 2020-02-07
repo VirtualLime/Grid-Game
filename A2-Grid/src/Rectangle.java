@@ -4,6 +4,7 @@ import java.awt.*;
  * Class to represent a square on the game board
  * This is what is rendered on the game board
  * This class is also what is used to set the score
+ * Provided for the assignment, altered by Tyler Arsenault and Jordan Luke
  *
  */
 public class Rectangle {
@@ -96,6 +97,13 @@ public class Rectangle {
     }
 
     //get the amount touching the edge of the game board
+
+    /**
+     * This method calculates and returns the bordersize for a particulr rectangle
+     * The calculations are based on if it is on the edge, if it is on the edge
+     * at the corner, or if it is not an edge rectangle.
+     * @return the bordersize for the rectangle.
+     */
     public int getBorderSize() {
         borderSize = 0;
         if(!isVisible){return borderSize;}
